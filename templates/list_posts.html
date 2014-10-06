@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>文章列表</title>
+</head>
+<body>
+  <div>
+    {% for post in posts %}
+      <h3>{{ post.title }}</h3>
+      <h4>{{ post.author }}</h4>
+      <p>{{ post.content }}</p>
+    {% endfor %}
+  </div>
+</body>
+</html>
