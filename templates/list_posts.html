@@ -5,12 +5,21 @@
   <title>文章列表</title>
 </head>
 <body>
+
+
   <div>
     {% for post in posts %}
       <h3>{{ post.title }}</h3>
       <h4>{{ post.author }}</h4>
       <p>{{ post.content }}</p>
+      <p>{{ post.id  }}</p>
     {% endfor %}
   </div>
+
+    {% if session.logged_in %}
+  <form action="{{url_for('add_post')}}">
+    <input type="submit" value="添加" \>
+    </form>
+    {% endif %}
 </body>
 </html>
