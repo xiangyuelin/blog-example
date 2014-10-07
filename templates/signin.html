@@ -5,11 +5,18 @@
   <title>文章内容</title>
 </head>
 <body>
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}</p>
-    {% endif %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
   {% if not session.logged_in %}
-    <form action="{{url_for("signin")}}" method="post">
+    <form action="{{url_for("web.signin")}}" method="post">
     <p>username</p>
     <input type="text" name="username">
     <p>password</p>

@@ -10,10 +10,10 @@
       <h4>{{ post.author }}</h4>
       <p>{{ post.content }}</p>
   </div>
- <form action="{{url_for("delete_post", id=post.id)}}" method="post">
+ <form action="{{url_for("web.delete_post", id=post.id)}}" method="post">
     <input type="submit" value="delete">
  </form>
- <form action="{{url_for("put_post", id=post.id)}}" method="get">
+ <form action="{{url_for("web.update_post", id=post.id)}}" method="get">
     <input type="submit" value="update">
  </form>
 
