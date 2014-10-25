@@ -9,8 +9,8 @@ from flask import session
 from flask import flash
 from flask import current_app
 
-from models import post_service
-from models import user_service
+from service import Post
+from service import User
 from extension import db
 from require import require_user
 
@@ -20,10 +20,10 @@ web = Blueprint('web', __name__)
 @web.route('/')
 @web.route('/posts')
 def list_all_posts():
-    posts = post_service.get_all_posts()
+    posts = Post.get_all_posts()
     users={}
     for post in posts:
-        users[post.id] = user_service.get_user(post.user_id)
+        users[post.id] = User.get_user(post.user_id)
     #print posts
     return render_template('list_posts.html', posts=posts, users=users)
 
@@ -36,10 +36,10 @@ def list_users():
 
 @web.route('/<user_id>/posts')
 def list_posts(user_id):
-    posts = post_service.get_posts_by_user(user_id)
+    posts = Post.get_posts_by_user(user_id)
     users = {}
     for post in posts:
-        users[post.id] = user_service.get_user(post.user_id)
+        users[post.id] = User.get_user(post.user_id)
     return render_template('list_posts.html', posts=posts, users=users)
 
 
@@ -47,14 +47,14 @@ def list_posts(user_id):
 @require_user
 def update_user(user_id):
     if request.method == 'GET':
-        user = user_service.get_user(user_id)
+        user = User.get_user(user_id)
         return render_template('update_user.html', user=user)
     #post
     username = request.form.get('username')
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user_service.update_user(user_id, username, password, email)
+    User.update_user(user_id, username, password, email)
     flash('update user information successfully')
     session.pop('uid', None)
     return redirect(url_for('.signin'))
@@ -71,7 +71,7 @@ def add_post():
     title = request.form.get('title')
     #author = request.form.get('author')
     content = request.form.get('content')
-    post_service.add_post(title=title, content=content, user_id=user_id)
+    Post.add_post(title=title, content=content, user_id=user_id)
     #posts = post_service.get_posts_by_user(user_id)
     return redirect(url_for('.list_posts', user_id=user_id))
     #render_template('list_posts.html', posts=posts)
@@ -82,29 +82,30 @@ def add_post():
 def delete_post():
     post_id = request.form.get('post_id')
     #print type(post_id)
+    post = Post.get_post(post_id)
     user_id = post.user_id
     #post = post_service.get_post(post_id)
     #if session['uid'] != user_id
        # flash('Unauthorized! You are not the author!')
         #return redirect(url_for('web.list_all_posts'))
     #authorized
-    post_service.delete_post(post_id)
+    Post.delete_post(post_id)
     return redirect(url_for('web.list_posts', user_id=user_id))
 
 
 @web.route('/posts/<post_id>', methods=['GET', 'POST'])
 def show_post(post_id):
     if request.method == 'GET':
-        post = post_service.get_post(post_id)
+        post = Post.get_post(post_id)
         user_id = post.user_id
-        user = user_service.get_user(user_id)
+        user = User.get_user(user_id)
         return render_template('show_post.html', post=post, user=user)
 
     #post
     #title = request.form.get('title')
     #author = request.form.get('author')
     content = request.form.get('content')
-    post_service.update_post(content=content, post_id=post_id)
+    Post.update_post(content=content, post_id=post_id)
     return redirect(url_for('web.show_post', post_id=post_id))
 
 
@@ -113,7 +114,7 @@ def show_post(post_id):
 def update_post():
     post_id = request.form.get('post_id')
     print post_id
-    post = post_service.get_post(post_id)
+    post = Post.get_post(post_id)
     return render_template('update_post.html', post=post)
 
 
@@ -128,7 +129,7 @@ def signin():
     password = request.form.get('password')
     print username, password
     #user = User.query.filter_by(name=username).first()
-    user = user_service.get_user_by_name(username)
+    user = User.get_user_by_name(username)
     print user
     if user is None:
         flash('user does not exist!')
@@ -151,7 +152,7 @@ def signup():
     password = request.form.get('password')
     print username, password, email
     #user = User.query.filter_by(name=username).first()
-    user_service.add_user(username, password, email)
+    User.add_user(username, password, email)
 
     return render_template('signin.html')
 
@@ -159,8 +160,8 @@ def signup():
 @web.route('/signout', methods=['GET', 'POST'])
 @require_user
 def signout():
-  session.pop('uid', None)
-  flash('You were logged out')
-  return redirect(url_for('.signin'))
+    session.pop('uid', None)
+    flash('You were logged out')
+    return redirect(url_for('.signin'))
 
 

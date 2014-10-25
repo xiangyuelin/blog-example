@@ -9,8 +9,8 @@ from flask import session
 from flask import flash
 from flask import current_app
 
-from models import post_service
-from models import user_service
+from service import Post
+from service import User
 from extension import db
 from require import require_admin
 
@@ -21,10 +21,10 @@ admin = Blueprint('admin', __name__)
 @require_admin
 def list_all_posts():
     #posts = Post.query.all()
-    posts = post_service.get_all_posts()
+    posts = Post.get_all_posts()
     users={}
     for post in posts:
-        users[post.id] = user_service.get_user(post.user_id)
+        users[post.id] = User.get_user(post.user_id)
     #print posts
     return render_template('admin_list_posts.html', posts=posts, users=users)
 
@@ -32,7 +32,7 @@ def list_all_posts():
 @admin.route('/users')
 @require_admin
 def list_users():
-    users = user_service.get_all_users()
+    users = User.get_all_users()
     return render_template('list_users.html', users=users)
 
 
@@ -45,7 +45,7 @@ def add_user():
     #post
     uname = request.form.get('username')
     upwd = current_app.config['DEFAULT_UPWD']
-    user_service.add_user(uname, upwd)
+    User.add_user(uname, upwd)
     return redirect(url_for('.list_users'))
 
 
@@ -53,17 +53,17 @@ def add_user():
 @admin.route('/users/<user_id>/delete', methods=['POST'])
 @require_admin
 def delete_user(user_id):
-    user_service.delete_user(user_id)
+    User.delete_user(user_id)
     return redirect(url_for('.list_users'))
 
 
 @admin.route('/<user_id>/posts')
 @require_admin
 def list_posts(user_id):
-    posts = post_service.get_posts_by_user(user_id)
+    posts = Post.get_posts_by_user(user_id)
     users = {}
     for post in posts:
-        users[post.id] = user_service.get_user(post.user_id)
+        users[post.id] = User.get_user(post.user_id)
     return render_template('admin_list_posts.html', posts=posts, users=users)
 
 
@@ -89,9 +89,9 @@ def add_post():
 def delete_post():
     post_id = request.form.get('post_id')
     print type(post_id)
-    post = post_service.get_post(post_id)
+    post = Post.get_post(post_id)
     user_id = post.user_id
-    post_service.delete_post(post_id)
+    Post.delete_post(post_id)
     return redirect(url_for('admin.list_posts', user_id=user_id))
 
 
@@ -99,7 +99,7 @@ def delete_post():
 @require_admin
 def show_post(post_id):
     if request.method == 'GET':
-        post = post_service.get_post(post_id)
+        post = Post.get_post(post_id)
         return render_template('admin_show_post.html', post=post)
 
 
