@@ -6,7 +6,7 @@
     <!-- Bootstrap -->
     <!-- link href="css/bootstrap.min.css" rel="stylesheet" -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-   <title>登陆</title>
+   <title>注册用户</title>
   <style type="text/css">
     body{
       display: box;
@@ -28,8 +28,7 @@
   {% endif %}
 {% endwith %}
 
-  {% if not session.uid %}
-    <form class="form-horizontal" action="{{url_for("web.signin")}}" method="post">
+    <form class="form-horizontal" action="{{url_for("web.signup")}}" method="post">
       <div class="form-group">
       <label class="col-sm-3 control-label" for="username">用户名</label>
      <div class="col-sm-9">
@@ -39,25 +38,21 @@
   <div class="form-group">
     <label for="inputPassword" class="col-sm-3 control-label">密码</label>
     <div class="col-sm-9">
-      <input type="password" class="form-control" id="inputPassword" placeholder="请输入密码">
+      <input type="password" name="password" class="form-control" id="inputPassword" placeholder="请输入密码">
     </div>
   </div>
- <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">登陆</button>
+      <div class="form-group">
+      <label class="col-sm-3 control-label" for="email">邮箱</label>
+     <div class="col-sm-9">
+  <input type="email" name="email" class="form-control" id="username" placeholder="请输入邮箱地址">
     </div>
-  </div>
-    </form>
-  <form class="form-horizontal" action="{{url_for("web.signup")}}" method="get">
+    </div>
  <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
       <button type="submit" class="btn btn-primary">注册</button>
     </div>
   </div>
-  </form>
- {% else %}
-    <p>you have logged in!</p>
- {% endif %}
+    </form>
 
 
 

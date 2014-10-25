@@ -6,7 +6,7 @@
     <!-- Bootstrap -->
     <!-- link href="css/bootstrap.min.css" rel="stylesheet" -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-   <title>登陆</title>
+   <title>更新用户信息</title>
   <style type="text/css">
     body{
       display: box;
@@ -28,36 +28,33 @@
   {% endif %}
 {% endwith %}
 
-  {% if not session.uid %}
-    <form class="form-horizontal" action="{{url_for("web.signin")}}" method="post">
+    <form class="form-horizontal" action="{{url_for("web.update_user", user_id=session.uid)}}"
+    method="post">
       <div class="form-group">
       <label class="col-sm-3 control-label" for="username">用户名</label>
      <div class="col-sm-9">
-    <input type="text" name="username" class="form-control" id="username" placeholder="请输入用户名">
+    <input type="text" name="username" class="form-control" id="username" value={{user.name}}>
     </div>
     </div>
   <div class="form-group">
     <label for="inputPassword" class="col-sm-3 control-label">密码</label>
     <div class="col-sm-9">
-      <input type="password" class="form-control" id="inputPassword" placeholder="请输入密码">
+      <input type="password" name="password" class="form-control" id="inputPassword"
+      value={{user.passwrod}}>
     </div>
   </div>
+      <div class="form-group">
+      <label class="col-sm-3 control-label" for="email">邮箱</label>
+     <div class="col-sm-9">
+  <input type="email" name="email" class="form-control" id="username" value={{user.email}}>
+    </div>
+    </div>
  <div class="form-group">
     <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">登陆</button>
+      <button type="submit" class="btn btn-primary">确定</button>
     </div>
   </div>
     </form>
-  <form class="form-horizontal" action="{{url_for("web.signup")}}" method="get">
- <div class="form-group">
-    <div class="col-sm-offset-3 col-sm-9">
-      <button type="submit" class="btn btn-primary">注册</button>
-    </div>
-  </div>
-  </form>
- {% else %}
-    <p>you have logged in!</p>
- {% endif %}
 
 
 

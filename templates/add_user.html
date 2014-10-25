@@ -6,22 +6,18 @@
     <!-- Bootstrap -->
     <!-- link href="css/bootstrap.min.css" rel="stylesheet" -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-  <title>添加文章</title>
+  <title>添加用户</title>
 </head>
 <body>
 
- <form class="form-horizontal" action="{{url_for('web.add_post')}}" method="post" role="form">
+ <form class="form-horizontal" action="{{url_for('admin.add_user')}}" method="post" role="form">
   <div class="form-group">
-    <label for="inputtitle" class="col-sm-2 control-label">题目</label>
+    <label for="inputname" class="col-sm-2 control-label">用户名</label>
     <div class="col-sm-10">
-      <input type="text" name="title" class="form-control" id="inputtitle" >
+      <input type="text" name="username" class="form-control" id="inputname" >
     </div>
   </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <textarea name="content" rows="10" cols="150"></textarea>
-    </div>
-  </div>
+
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-primary">提交</button>

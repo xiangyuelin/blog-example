@@ -6,16 +6,18 @@ from flask import redirect
 
 from extension import db
 from web import web
+from admin import admin
 
 SECRET_KEY = 'rest api'
 DEBUG=True
 
 # databse config
-SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/blog-example'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:@localhost/blog'
 
 # admin pass
-USERNAME='lxy'
-PASSWORD='123'
+AD_NAME = "admin"
+AD_PWD = "123"
+DEFAULT_UPWD = "123"
 
 
 # create our little application :)
@@ -24,14 +26,16 @@ app.config.from_object(__name__)
 
 # setup extentions
 db.init_app(app)
+#
 
 # setup blueprint
-app.register_blueprint(web)
-
-
-@app.route('/')
-def index():
-    return redirect(url_for('web.list_posts'))
+#def config_blueprint():
+#app.register_blueprint(web)
+app.register_blueprint(web, url_prefix='/web')
+app.register_blueprint(admin, url_prefix='/admin')
+with app.app_context():
+    db.create_all()
+#def config_db():
 
 
 # utils

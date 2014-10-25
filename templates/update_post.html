@@ -6,28 +6,42 @@
     <!-- Bootstrap -->
     <!-- link href="css/bootstrap.min.css" rel="stylesheet" -->
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-  <title>添加文章</title>
+  <title>文章内容</title>
+
+  <style type="text/css">
+
+    body{
+        background-color: #efefef;
+    }
+    form{
+        margin: 20px;
+        /*background-color: #efefef;*/
+    }
+  </style>
 </head>
 <body>
-
- <form class="form-horizontal" action="{{url_for('web.add_post')}}" method="post" role="form">
+  <div>
+ <form class="form-horizontal" action="{{url_for('web.show_post', post_id=post.id)}}" method="post" role="form">
   <div class="form-group">
-    <label for="inputtitle" class="col-sm-2 control-label">题目</label>
+    <label for="inputEmail3" class="col-sm-2 control-label">题目</label>
     <div class="col-sm-10">
-      <input type="text" name="title" class="form-control" id="inputtitle" >
+      <input type="text" class="form-control" id="inputtitle" placeholder={{post.title}}>
     </div>
   </div>
+
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-      <textarea name="content" rows="10" cols="150"></textarea>
+      <textarea name="content" rows="10" cols="150">{{ post.content}} ...update here here</textarea>
     </div>
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-primary">提交</button>
-
     </div>
   </div>
 </form>
+
+
+
 </body>
 </html>

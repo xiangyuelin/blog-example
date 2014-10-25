@@ -33,27 +33,12 @@
 
     {% for post in posts %}
     <div>
-      <a id="title" href="{{url_for('web.show_post', post_id=post.id)}}">{{ post.title }}</a>
+      <a id="title" href="{{url_for('admin.show_post', post_id=post.id)}}">{{ post.title }}</a>
       <span id="author">-- written by {{ users[post.id].name }}</span>
     </div>
     <hr />
     {% endfor %}
 
 
-    {% if session.uid %}
-    <div>
-    <div class="col-sm-offset-4 col-sm-8">
-    <form action="{{url_for('web.add_post')}}" method='get'>
-    <button type="submit" class="btn btn-success">添加</button>
-    </form>
-    </div>
-    <div class="col-sm-offset-3 col-sm-9">
-    <form action="{{url_for('web.update_user', user_id=session.uid)}}"  method='get'>
-    <button type="submit" class="btn btn-success">修改个人信息</button>
-    </form>
-    </div>
-    </div>
-
-    {% endif %}
 </body>
 </html>
